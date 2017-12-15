@@ -7,14 +7,20 @@ class LanguageMarkovChain:
     @neighbors: dict of token to (dict of neighbor to count)
     Every token consists of one or more words
     '''
-    def __init__(self, text):
+    def __init__(self, text, order=1):
         words = text.split()
         n = len(words)
         self.neighbors = defaultdict(lambda: defaultdict(int))
         total_occurrences = defaultdict(int)
         for i in range(n-1):
-            self.neighbors[words[i]][words[i+1]] += 1
-            total_occurrences[words[i]] += 1
+            for j in range(max(0,i-order+1), i+1):
+                token = ' '.join(words[j:i+1])
+                # print('Token found:', token, 'with neighbors:')
+                for k in range(i+1, min(i+order+1, n)):
+                    neighbor = ' '.join(words[i+1:k+1])
+                    # print('\t', neighbor)
+                    self.neighbors[token][neighbor] += 1
+                    total_occurrences[token] += 1
         for token, neighbors in self.neighbors.items():
             options, weights = list(zip(*neighbors.items()))
             options, weights = list(options), list(weights)
@@ -24,7 +30,10 @@ class LanguageMarkovChain:
         return
 
     def reset(self):
-        self.current_token = np.random.choice([x for x in self.neighbors.keys() if x[0].isupper()])
+        try:
+            self.current_token = np.random.choice([x for x in self.neighbors.keys() if x and x[0].isupper()])
+        except ValueError as e:
+            self.current_token = np.random.choice([x for x in self.neighbors.keys()])
         return
 
     def get_neighbors(self, token):
