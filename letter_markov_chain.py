@@ -34,10 +34,11 @@ class LetterMarkovChain:
         return
 
     def reset(self):
-        try:
-            self.current_token = np.random.choice([x for x in self.neighbors.keys() if x and x[0].isupper()])
-        except ValueError as e:
-            self.current_token = np.random.choice([x for x in self.neighbors.keys()])
+        self.current_token = np.random.choice([x for x in self.neighbors.keys()])
+        # try:
+        #     self.current_token = np.random.choice([x for x in self.neighbors.keys() if x and x[0].isupper()])
+        # except ValueError as e:
+        #     self.current_token = np.random.choice([x for x in self.neighbors.keys()])
         return
 
     def get_neighbors(self, token):
