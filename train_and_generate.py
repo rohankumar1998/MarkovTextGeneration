@@ -55,25 +55,29 @@ def train_on_posts(page_posts_json, order=4, letter=True, preprocess=True):
     return model
 
 if __name__ == '__main__':
-    # file names for text and lyrics JSONs
+    # file names for text, lyrics JSONs and FB posts JSONs
     genesis = '/Users/Rohan/Desktop/Computation Institute/Topic_Modelling/test files/genesis.txt'
     trump = '/Users/Rohan/Desktop/Computation Institute/Topic_Modelling/test files/trump_speeches.txt'
     mlk = '/Users/Rohan/Desktop/Computation Institute/Topic_Modelling/test files/MLK.txt'
     caesar = 'test_files/julius_caesar.txt'
     plato = 'test_files/plato_republic.txt'
     kant = 'test_files/kant.txt'
-    taylor_swift_lyrics = './getting_data/taylor_swift_lyrics.json'
-    queen_lyrics = './getting_data/queen_lyrics.json'
+    taylor_swift_lyrics = 'test_files/taylor_swift_lyrics.json'
+    queen_lyrics = 'test_files/queen_lyrics.json'
+    uchicago_secrets = 'test_files/uchicago_secrets.json'
+    uchicago_crushes = 'test_files/uchicago_crushes.json'
 
-    # training and saving
-    # model = train_on_lyrics(queen_lyrics, order=5)
-    # model = train_on_posts('./getting_data/uchicago_secrets.json', order=3, letter=False, preprocess=False)
-    # save_model(model, 'models/uchicago_secrets_markov_word_3.pkl')
-
-    # loading and generating
+    # file names for Pickle's models
     taylor_swift_model = 'models/taylor_swift_markov_5.pkl'
     queen_model = 'models/queen_markov_5.pkl'
     trump_model = 'models/trump_markov_4.pkl'
     uchicago_secrets_model = 'models/uchicago_secrets_markov_word_3.pkl'
-    model = load_model(uchicago_secrets_model)
+    uchicago_crushes_model = 'models/uchicago_crushes_markov_word_3.pkl'
+
+    # training and saving
+    # model = train_on_posts(uchicago_secrets, order=3, letter=False, preprocess=False)
+    # save_model(model, 'models/uchicago_crushes_markov_word_3.pkl')
+
+    # generating 
+    model = load_model(uchicago_crushes_model)
     print(generate_text(model, n=30, letter=False))
