@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 import time
+import sys
 import datetime
 import json
 
@@ -56,11 +57,14 @@ def get_facebook_feed(page_id='', page_name='', access_token=''):
     return posts
 
 if __name__ == '__main__':
-    access_token = "ADD YOUR ACCESS TOKEN HERE"
-    page_id = '776807699062251'
-    page_name = 'UniversityOfChicagoSecrets'
-    posts = get_facebook_feed(page_id, access_token=access_token)
-    input('%d posts found in total!' % len(posts))
-    with open('uchicago_secrets.json', 'w') as f:
+    if len(sys.argv) < 4:
+        print('Usage: python3 <this_script> <access_token> <page_name> <output_json>')
+        sys.exit()
+    # page_id = '776807699062251'
+    # page_name = 'UniversityOfChicagoSecrets'
+    access_token, page_name, output_json = sys.argv[1:4]
+    posts = get_facebook_feed(page_name=page_name, access_token=access_token)
+    print('%d posts found in total!' % len(posts))
+    with open(output_json, 'w') as f:
         json.dump(posts, f)
     print('Dumped to JSON file')
